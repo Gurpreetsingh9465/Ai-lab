@@ -33,7 +33,7 @@ class Board {
                 if(i%3==0) {
                     cout<<endl;
                 }
-                cout<<"_"<<board[i]<<"_";
+                cout<<"_"<<board[i]<<a"_";
                 if( i == 0 || i == 1 || i == 3 || i == 4 || i == 6 || i == 7) {
                     cout<<"|";
                 }
@@ -102,7 +102,7 @@ class Board {
         // }
 
         int randomAlgo() {
-            if (board[5] == this->oponent) {
+            if (board[4] == this->oponent) {
                 if (board[0] == '_') {
                     return 1;
                 }
@@ -118,12 +118,10 @@ class Board {
                 
             }
             
-            if (board[4] == '_') {
-                return 5;
-            }
+            
             if (board[0] ==this->oponent) {
-                if (board[2] == '_')
-                    return 3;
+                if (board[1] == '_')
+                    return 2;
             }
             if (board[2] ==this->oponent) {
                 if (board[0] == '_')
@@ -134,10 +132,12 @@ class Board {
                     return 9;
             }
             if (board[8] ==this->oponent) {
-                if (board[6] == '_')
-                    return 7;
+                if (board[5] == '_')
+                    return 6;
             }
-            
+            if (board[4] == '_') {
+                return 5;
+            }
             int i = rand()%9+1;
             while (!isValidMove(i)) {
                 i = rand()%9+1;
