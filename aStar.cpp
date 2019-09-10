@@ -13,18 +13,18 @@ vector<pair<char,pair<int,char>>> aStar(unordered_map<char,vector<pair<char,int>
     for(auto &i: graph) {
         q.push_back({i.first, {i.first == start?0:INT_MAX,'0'}});
     }
+    
     int n = q.size();
     int cur = 0;
-    make_heap(q.begin(),q.end(), cmp);
     while (q.size() > 0) {
-        auto &node = q.front();
+        auto &node = q[0];
         ans.push_back(node);
         q.erase(q.begin());
         for(auto & edge : graph[node.first]) {
             for(auto &a: q) {
                 if(a.first == edge.first) {
-                    if(a.second.first > (heuristic[a.first]+edge.second)) {
-                        a.second.first = heuristic[a.first]+edge.second;
+                    if(a.second.first > (heuristic[a.first]+edge.second+node.second.first)) {
+                        a.second.first = heuristic[a.first]+edge.second+node.second.first;
                         a.second.second = node.first;
                     }
                 }
