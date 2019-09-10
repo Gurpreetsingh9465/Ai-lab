@@ -91,6 +91,14 @@ class Board {
             board[i-1] = '_';
         }
 
+        int getRating(char turn) {
+            if(turn == this->getAi()) {
+                
+            } else {
+
+            }
+        }
+
         // int minimax(bool isAiTurn) {
         //     int move = -1
         //     if (isAiTurn) {
