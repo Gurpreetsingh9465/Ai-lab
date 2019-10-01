@@ -78,7 +78,7 @@ int main() {
         cout<<i<<" ";
     }
     cout<<endl;
-    result = dfs(graph, 3);
+    result = dfs(graph, 1);
     cout<<"DFS = ";
     for(int i: result) {
         cout<<i<<" ";

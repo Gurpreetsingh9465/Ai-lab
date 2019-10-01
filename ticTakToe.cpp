@@ -6,6 +6,7 @@ class Board {
         char *board;
         char AI;
         char oponent;
+        int maxDepth;
     public:
         char getOponent() {
             return oponent;
@@ -16,24 +17,24 @@ class Board {
         Board() {}
 
         Board(char AI) {
+            this->maxDepth = 5;
             this->AI = AI;
             if(AI == 'X') {
                 oponent = 'O';
             } else {
                  oponent = 'X';
             }
-            
             this->board = new char[9];
             memset(this->board,'_',sizeof(this->board)+1);
         }
 
         void displayBoard() {
-            system("cls");
+            system("clear");
             for(int i=0;i<9;i++) {
                 if(i%3==0) {
                     cout<<endl;
                 }
-                cout<<"_"<<board[i]<<a"_";
+                cout<<"_"<<board[i]<<"_";
                 if( i == 0 || i == 1 || i == 3 || i == 4 || i == 6 || i == 7) {
                     cout<<"|";
                 }
@@ -91,23 +92,72 @@ class Board {
             board[i-1] = '_';
         }
 
-        int getRating(char turn) {
+        int getRating(char turn, int i) {
+            makeMove(i, turn);
             if(turn == this->getAi()) {
-                
+                if(isWinning(turn)) {
+                    return 10;
+                }
+                if(isDraw()) {
+                    return 0;
+                }
+                if(isWinning(this->getOponent())) {
+                    return -10;
+                }
             } else {
-
+                if(isWinning(turn)) {
+                    return -10;
+                }
+                if(isDraw()) {
+                    return 0;
+                }
+                if(isWinning(this->getAi())) {
+                    return 10;
+                }
             }
         }
 
-        // int minimax(bool isAiTurn) {
-        //     int move = -1
-        //     if (isAiTurn) {
-                
-        //     } else if (!isAiTurn) {
-
-        //     }
-        //     return move;
-        // }
+        int minmax(bool isAiTurn, int depth) {
+            if(this->maxDepth <= depth) {
+                return -1;
+            }
+            int move = -1;
+            if (isAiTurn) {
+                int val = INT_MIN;
+                for(int i=1;i<=9;i++) {
+                    if(isValidMove(i)) {
+                        int score = this->getRating(this->getAi(),i);
+                        if(score > val) {
+                            val = score;
+                            move = i;
+                        }
+                        backtrack(i);
+                    }
+                    if(val<0) {
+                        minmax(!isAiTurn,depth+1);
+                    }
+                }
+            } else {
+                int val = INT_MAX;
+                for(int i=1;i<=9;i++) {
+                    if(isValidMove(i)) {
+                        int score = this->getRating(this->getOponent(),i);
+                        if(score < val) {
+                            val = score;
+                            move = i;
+                        }
+                        backtrack(i);
+                    }
+                    if(val>0) {
+                        minmax(!isAiTurn, depth+1);
+                    }
+                }
+            }
+            if(move == -1) {
+                return this->randomAlgo();
+            }
+            return move;
+        }
 
         int randomAlgo() {
             if (board[4] == this->oponent) {
@@ -207,27 +257,27 @@ int main() {
             cout<<"Wrong Input"<<endl;
             goto start;
         }
-        system("cls");
+        system("clear");
         while (true) {
             if (b->isDraw()) {
-                system("cls");
+                system("clear");
                 cout<<"Draw"<<endl;
                 break;
             }
             b->displayBoard();
             if (isAiTurn) {
-                int move = b->predictMove();
+                int move = b->minmax(true,0);
                 b->makeMove(move,b->getAi());
                 b->displayBoard();
                 isAiTurn = false;
             }
             if (b->isWinning(b->getAi())) {
-                system("cls");
+                system("clear");
                 cout<<"Ai wins"<<endl;
                 break;
             }
             if (b->isDraw()) {
-                system("cls");
+                system("clear");
                 cout<<"Draw"<<endl;
                 break;
             }
@@ -237,12 +287,12 @@ int main() {
                 isAiTurn = true;
             }
             if (b->isWinning(b->getOponent())) {
-                system("cls");
+                system("clear");
                 cout<<"You Win"<<endl;
                 break;
             }
             if (b->isDraw()) {
-                system("cls");
+                system("clear");
                 cout<<"Draw"<<endl;
                 break;
             }
