@@ -4,9 +4,10 @@ using namespace std;
 class node {
     public:
     int data;
-    node *left, *right;
+    node *left, *right, *mid;
     node(int data) {
         this->data = data;
+        this->mid = NULL;
         this->left = NULL;
         this->right = NULL;
     }
@@ -29,6 +30,9 @@ vector<int> iterativeDfs(node *root, int depth) {
             
             if(n->right != NULL) {
                 s.push(n->right);
+            }
+            if(n->mid != NULL) {
+                s.push(n->mid);
             }
             if(n->left != NULL) {
                 s.push(n->left);
@@ -55,16 +59,18 @@ void generateTree(node *root) {
     if(root->data >= 24) {
         return;
     }
-    root->left = new node(3*root->data - 1);
-    root->right = new node(3*root->data);
+    root->left = new node(3*root->data);
+    root->mid = new node(3*root->data+1);
+    root->right = new node(3*root->data+2);
     generateTree(root->left);
+    generateTree(root->mid);
     generateTree(root->right);
 }
 
 int main() {
     node *root = new node(1);
     generateTree(root);
-    for(int i = 1;i<=7;i++) {
+    for(int i = 1;i<=11;i++) {
         cout<<"depth "<<i<<" =: ";
         vector<int> res = iterativeDfs(root,i);
         printVector(res);

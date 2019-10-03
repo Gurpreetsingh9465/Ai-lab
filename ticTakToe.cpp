@@ -121,9 +121,10 @@ class Board {
             if(this->maxDepth <= depth) {
                 return -1;
             }
+            int val;
             int move = -1;
             if (isAiTurn) {
-                int val = INT_MIN;
+                val = INT_MIN;
                 for(int i=1;i<=9;i++) {
                     if(isValidMove(i)) {
                         int score = this->getRating(this->getAi(),i);
@@ -131,14 +132,15 @@ class Board {
                             val = score;
                             move = i;
                         }
+                        if(val<0) {
+                            minmax(!isAiTurn,depth+1);
+                        }
                         backtrack(i);
                     }
-                    if(val<0) {
-                        minmax(!isAiTurn,depth+1);
-                    }
+                    
                 }
             } else {
-                int val = INT_MAX;
+                val = INT_MAX;
                 for(int i=1;i<=9;i++) {
                     if(isValidMove(i)) {
                         int score = this->getRating(this->getOponent(),i);
@@ -146,17 +148,18 @@ class Board {
                             val = score;
                             move = i;
                         }
+                        if(val>0) {
+                            minmax(!isAiTurn, depth+1);
+                        }
                         backtrack(i);
                     }
-                    if(val>0) {
-                        minmax(!isAiTurn, depth+1);
-                    }
+                    
                 }
             }
             if(move == -1) {
                 return this->randomAlgo();
             }
-            return move;
+            return val;
         }
 
         int randomAlgo() {
