@@ -39,7 +39,7 @@ int main() {
         int *ans = getData(a,10);
         pair<int,int> p1,p2;
         p1.first = ans[0];
-        p1.first = ans[1];
+        p1.second= ans[1];
         p2.first = ans[2];
         p2.second = ans[3];
         if(sets.find(p1) == sets.end()) {

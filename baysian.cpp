@@ -46,7 +46,7 @@ int main() {
       {'H',{}}
     });
     vector<vector<char>> ans = allPath(m,'A','H');
-    vector<float> prob; 
+    vector<float> prob;
     for(auto &i: ans) {
       char prev;
       if(i.size() > 0)
